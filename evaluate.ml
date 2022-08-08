@@ -156,24 +156,6 @@ let rec type_check (e: expr) (ctx: context) : typ result =
      | Error err -> Error err
      )
 
-
-(* This function should never raise an exception, even though a function
-   that it calls will raise exceptions on some of its inputs.
-   Why is that?
-*)
-(* evaluate begins by calling (type_check e []) which can find a potential
-   type exception, but it doesn't raise those exceptions. Instead, it returns
-   an Error type if it finds any. The resulting type is matched so that
-   (eval e []), which could raise type exceptions if it ran into any, will only run
-   if type_check found that the expression doesn't contain anything that would
-   cause it to raise a type exception.
-
-   However, DivisionByZero isn't a type error, and so type_check won't catch that
-   problem. Zero is still an integer afterall, so as far as that function is
-   concerned, dividing by zero isn't a problem. So, even if there is a divison
-   by zero, eval will still be called after evaluate if there were no type errors,
-   and then eval will raise the exception DivisionByZero.
-*)
 let evaluate (e: expr) : value result =
   match type_check e [] with
   | Result ty -> Result (eval e [])
