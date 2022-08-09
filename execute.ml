@@ -98,7 +98,6 @@ let rec eval (e: expr) (env: environment) : value =
      )
 
   | _ -> raise (Failure "Fill in the missing cases in `eval`")
-         (* Once you've filled in the missing cases you can remove this. *)
 
 
 (* A statement has the expected forms from imperative programming. *)
@@ -109,7 +108,6 @@ type stmt =
   | IfThenElse of expr * stmt * stmt
   | While of expr * stmt
 
-  (* Some additional statement form to implement *)
   | ReadNum of string
   | WriteNum of expr
   | WriteStr of string
@@ -119,11 +117,6 @@ type stmt =
   | RepeatUntil of stmt * expr
   | DoWhile of stmt * expr
 
-
-(* You may find this function useful in your implementation of
-   `ReadNum`.  This function will return the value to be stored
-   in the name part of `ReadNum`. 
- *)
 let rec read_number () : int =
   try int_of_string (read_line ()) with
   | Failure _ ->
@@ -132,12 +125,6 @@ let rec read_number () : int =
 
 type state = environment
 
-(* The "meaning" of a statement is a function that maps an intput state 
-   into an output state. This is done by the `exec` function below.
-
-   Below is the version of `exec` that we saw in class. This is the
-   function to extend. 
- *)
 let rec exec (s: stmt) (stt: state) : state =
   match s with
   | Skip -> stt
